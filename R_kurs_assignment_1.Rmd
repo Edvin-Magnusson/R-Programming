@@ -1,0 +1,476 @@
+---
+title: "R-Kurs Labb 1"
+author: "Edvin Magnusson"
+date: '2022-09-14'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### R Markdown
+
+### Uppgift 1  
+Creating a vector function 
+
+
+```{r}
+# Clear the enviroment 
+ rm(list = ls())
+
+my_num_vector <- function(){
+  x <- c(log10(11),cos(pi/5),exp(pi/3),(1173%%7)/19)
+  return(x)
+}
+
+my_num_vector()
+
+```
+
+### Uppgift 2 
+Create a function called mult_first_last() with the argument vector. The function shall return the
+product of the first and last element in vector.
+
+```{r}
+
+mult_first_last<- function(vektor){
+  
+  result<- vektor[1]*tail(vektor,1)
+  
+  return(result)
+  
+}
+
+mult_first_last(vektor = c(3,1,12,2,4))
+
+mult_first_last(vektor = c(3,1,12))
+
+```
+
+### Uppgift 3 
+Create a function called orth_scalar_prod() which calculate the scalar product between two vectors, a and b, in an orthonormal base. The scalar product is calculated in the following way:
+
+
+```{r}
+
+orth_scalar_prod<- function (a,b){
+  
+  result<- a%*%b
+  return(result)
+  
+}
+
+orth_scalar_prod(a = c(3,1,12,2,4), b = c(1,2,3,4,5))
+
+orth_scalar_prod(a = c(-1, 3), b = c(-3, -1))
+
+```
+
+### Uppgift 4 
+
+
+```{r}
+
+lukes_father <- function(name){
+  
+  answer<- "I am your father."
+  
+  
+  cat(name,answer,sep = ",")
+  
+}
+
+lukes_father(name = "Luke")
+
+lukes_father(name = "Edd")
+
+```
+
+### Uppgift 5 
+Approximate the number e formula sum(1/n!)
+
+```{r}
+# The trick is that when n=0 and 1 the answer is 1+1 
+
+approx_e<- function(N){
+  
+  i<- 2:N
+  factorial_part <- 1/factorial(i)
+  
+  answer<- 1+1+sum(factorial_part)
+  return(answer)
+
+  
+}
+
+approx_e(N = 2)
+
+approx_e(N = 4)
+
+approx_e(N=7)
+
+```
+
+With N=7 the approximation of e is correct with four decimals.
+
+### Question 6 
+ Create a function called filter_my_vector() with the arguments x and geq. The function should take
+ a vector x and set all values greater than or equal to geq to missing value (NA).
+
+
+```{r}
+
+filter_my_vector <- function(x,geq){
+  
+  x[x>=geq]<-NA
+  return(x)
+}
+
+
+filter_my_vector(x = c(2, 9, 2, 4, 102), geq = 4)
+
+```
+
+### Question 7 
+ create a magic matrix
+
+
+```{r}
+
+my_magic_matrix<- function (){
+  
+  x<-c(4,9,2,3,5,7,8,1,6)
+  Mat<- matrix(x,nrow = 3,ncol = 3,byrow = TRUE)
+  return(Mat)
+  
+}
+my_magic_matrix()
+
+# every row and column adds up to 15
+```
+
+
+### Question 8
+Create a function called calculate_elements(A) that can take a matrix of an arbitrary size and    
+calculate the number of elements in the matrix.
+
+
+```{r}
+
+Calculate_elements <- function(A){
+  
+  Result<- nrow(A)*ncol(A) 
+  return(Result)
+  
+}
+
+mat<-my_magic_matrix()
+
+Calculate_elements(A=mat)
+
+new_mat <- cbind(mat, mat)
+Calculate_elements(A = new_mat)
+
+
+
+```
+
+
+### Uppgift 9
+
+Create a function called row_to_zero(A, i) that can take a matrix of an arbitrary size and set the
+row indexed with i to zero.
+
+
+```{r}
+
+row_to_zero<-function(A,i){
+  
+  A[i,]<-0
+  return(A)
+}
+
+
+row_to_zero(A=mat,i=3)
+
+row_to_zero(A=mat,i=1)
+
+```
+
+### Uppgift 10 
+Create a function called add_elements_to_matrix() with parameters A, x, i, j. The function should
+take a matrix A of an arbitrary size and add the value x to the parts of A indexed by row(s) i and
+column(s) j.
+
+
+
+```{r}
+
+add_elements_to_matrix<-function(A,x,i,j){
+  
+  A[i,j]<- A[i,j]+x
+  return(A)
+  
+}
+
+add_elements_to_matrix(A = mat, x = 10, i = 2, j = 3)
+
+add_elements_to_matrix(A = mat, x = -2, i = 1: 3, j = 2: 3)
+
+
+```
+
+
+### Question 11 
+
+
+```{r}
+
+my_magic_list<- function(){
+  
+my_text<-"My own list"
+my_vector<-my_num_vector()
+my_matrix<-my_magic_matrix()
+
+listan<- list(info= my_text,my_vector,my_matrix)
+return(listan)
+}
+
+my_magic_list()
+
+```
+
+
+
+### Question 12 
+Create a function that will take a list x (that must contain one element with name info) and change
+this element to the text argument given by text.
+
+```{r}
+
+change_info <- function(x, text) {
+  x[1] <- text
+  return(x)
+}
+
+change_info(x=my_magic_list(),text="some new info")
+
+
+
+```
+### Question 13 
+
+Create a function called sum_numeric_parts() that will take a list x and sum together all numeric
+elements in this list.
+
+```{r}
+
+sum_numeric_parts <-function(x){
+  sum_num<- sum(as.numeric(unlist(x)),na.rm = TRUE)
+  return(sum_num)
+}
+
+  
+a_list<-my_magic_list()
+
+sum_numeric_parts(x=a_list)
+sum_numeric_parts(x=a_list[2])
+
+```
+### Question 14 
+
+Create a function that will take a list x and add a new list element with the name note. This new element should contain text from the note parameter. 
+
+
+```{r}
+
+
+add_note <- function(x,note){
+  New_list_element<- note
+  old_list<- x
+  ret<- list(info= old_list,note=New_list_element)
+  return(ret)
+}
+
+a_list <- my_magic_list()
+add_note(x = a_list, note = "This is a magic list!")
+
+
+```
+### Question 15 
+
+Create a function that generates a data.frame
+
+
+```{r}
+
+my_data.frame<-function(){
+ id <- c(1,2,3)
+     name <- c("John", "Lisa", "Azra")
+     income <- c(7.30,0.00, 15.21)
+     rich <- c(FALSE, FALSE, TRUE)
+     df <- data.frame(id = id, name = name, income = income, rich = rich)
+  return(df)
+  
+}
+
+my_data.frame()
+
+```
+
+### Question 16 
+
+Sorting a data.frame by one variable 
+
+```{r}
+
+sort_head<- function(df,var.name,n){
+  
+  sorting<- head(sort(df[,var.name],decreasing=TRUE),n)
+  return(sorting)
+  
+}
+
+sort_head(df=iris,var.name="Petal.Length",n=5)
+
+```
+```{r}
+# Alternativley 
+
+sort_head2 <- function(df,var.name,n){
+  sort2<-head(df[order(df[,var.name],decreasing = TRUE),],n)
+  return(sort2)
+  
+}
+
+sort_head2(df=iris,var.name="Petal.Length",n=12)
+
+
+```
+
+### Question 17 
+
+Create a compared to median function 
+
+
+```{r}
+
+add_median_variable<-function(df,j){
+  
+  Median<- median(df[,j])
+  
+  df$Compared_to_median<- ifelse(df[,j]==Median,c("Median"),ifelse(df[,j]<Median,c("Smaller"),c("Greater")))
+  
+  return(df)
+  
+}
+
+head(add_median_variable(df = faithful, 1), n = 12)
+
+
+```
+
+### Question 18 
+
+
+```{r}
+
+
+analyze_columns<- function(df,j){
+  
+  Mean<- apply(df[,j],2,mean)
+  Median<- apply(df[,j],2,median)
+  SD<- apply(df[,j],2, sd)
+  
+  Statistics <- rbind(Mean,Median,SD)
+  
+  Corr <- cor(df[,j])
+  
+  Listan<- list(Statistics,Correlation_Matrix=Corr)
+  
+  return(Listan)
+  
+}
+
+analyze_columns(df = faithful, 1:2)
+analyze_columns(df = iris, c(1,3))
+
+# Alternatively for better formatting you can use lapply 
+# It returns elements as list objects from vectors etc
+
+analyze_columns <- function(df, j){
+  
+    mean <- data.frame(lapply(df[,j], mean))
+    median <- data.frame(lapply(df[,j], median))
+    sd <- data.frame(lapply(df[,j], sd))
+    rb <- as.data.frame(rbind(mean, median, sd))
+    cor <- cor(df[,j])
+    out <- list(c(rb), correlation_matrix = cor)
+    
+    
+    return(out)
+    }
+  
+  
+analyze_columns(df = faithful, 1:2)
+analyze_columns(df = iris, c(1,3))
+  
+
+
+
+```
+### Question 19 
+
+Trace of a matrix 
+
+
+```{r}
+
+A <- matrix(2:5, nrow = 2)
+B <- matrix(1:9, nrow = 3)
+C <- matrix(9:-6, nrow = 4)
+
+matrix_trace <- function (X){
+  X[upper.tri(X)] <- 0
+  X[lower.tri(X)] <- 0
+  sum <- sum(X)
+  return(sum)
+}
+
+matrix_trace(A)
+
+# Alternatively 
+
+matrix_trace1 <- function (X){
+  sum_diag <- sum(diag(X))
+  return(sum_diag)
+}
+
+matrix_trace1(A)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
